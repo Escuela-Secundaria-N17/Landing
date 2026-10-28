@@ -5,7 +5,8 @@
 #   - cada 6 horas, para traer publicaciones nuevas de Instagram y cambios en Drive
 #   - a mano: pestaña Actions → "Deploy" → Run workflow
 #
-# En cada corrida trae Instagram y la bibliografía de Drive ANTES de compilar,
+# En cada corrida trae Instagram, Drive (bibliografía y documentos de concursos)
+# y los llamados a concurso del CGE ANTES de compilar,
 # así lo publicado siempre está al día y no hace falta commitear datos.
 # Si una API falla, el deploy se corta y queda online la versión anterior.
 #
@@ -16,6 +17,7 @@
 #   Variables (opcionales, pisan los valores por defecto):
 #               SITE_URL                 por defecto: site.url en src/content/site.ts
 #               DRIVE_ROOT_FOLDER        por defecto: la carpeta "Bibliografia" de la escuela
+#               DRIVE_CONCURSOS_FOLDER   link de la carpeta de Drive con los documentos de concursos docentes
 name: Deploy
 
 on:
@@ -60,7 +62,12 @@ jobs:
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
           DRIVE_ROOT_FOLDER: ${{ vars.DRIVE_ROOT_FOLDER || 'https://drive.google.com/drive/folders/1-QhZcESMRuZJnU6Kt-lUWIyqVc9RHJL2' }}
+          DRIVE_CONCURSOS_FOLDER: ${{ vars.DRIVE_CONCURSOS_FOLDER }}
         run: node scripts/sync-drive.mjs --optional
+
+      # Sitio externo: si el CGE no responde, avisa y se publica igual.
+      - name: Concursos docentes desde el CGE
+        run: node scripts/sync-cge.mjs
 
       - name: Novedades desde Instagram
         env:

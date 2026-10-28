@@ -24,6 +24,7 @@ npm run build        # build de producción + una página por ruta (GitHub Pages
 | `/agenda` | Agenda: fechas próximas por mes, filtros por tipo, fechas pasadas | ✓ |
 | `/novedades` | Novedades = publicaciones de Instagram | ✓ |
 | `/preguntas-frecuentes` | Preguntas frecuentes en formato chat | menú mobile, footer y Trámites |
+| `/concursos-docentes` | Llamados del CGE para la escuela (automático) + documentación para descargar | menú mobile, footer y Trámites |
 | cualquier otra | 404 | — |
 
 **Navegación:** en escritorio (≥ 1200 px) los links principales están siempre visibles en el header, con la página actual marcada. En mobile y tablet, menú hamburguesa con todas las páginas + Contacto.
@@ -62,6 +63,8 @@ Google Drive ──┘                         └─▶ materias.generated.json
 ```
 
 - `scripts/sync-instagram.mjs`: últimas 12 publicaciones; descarga las imágenes (las URLs de Instagram vencen); videos usan su miniatura, carruseles la primera foto; texto recortado y sin hashtags.
+- `scripts/sync-cge.mjs`: busca en el sitio del CGE (API de WordPress, o RSS si está apagada) y se queda con los títulos que nombran a la escuela: CUE 300-1754, o "N° 17" + "Ortiz". Si el CGE no responde, avisa y el deploy sigue.
+- Documentos de concursos: si existe la variable `DRIVE_CONCURSOS_FOLDER`, `sync-drive.mjs` lista esa carpeta como descargas (Google Docs → Word, Planillas → Excel).
 - `scripts/sync-drive.mjs`: recorre `Bibliografía/<año>/[Orientación X/]<materia>/archivos` y arma las materias. Estructura y reglas en [DEPLOY.md](DEPLOY.md#5-bibliografía-desde-drive).
 - Con `--optional` (como corren en el deploy), si falta la credencial se omiten y la sección muestra su estado vacío. Si la credencial está y la API falla, el deploy se corta y queda online la versión anterior.
 - `src/content/instagram.ts` combina lo sincronizado con `manualPosts` (para fijar una publicación con `pinned: true`).

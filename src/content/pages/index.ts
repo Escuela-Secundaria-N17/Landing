@@ -1,6 +1,7 @@
 import type { PageConfig } from '@/pages/types';
 import { agendaPage } from './agenda';
 import { centroEstudiantesPage } from './centro-estudiantes';
+import { concursosDocentesPage } from './concursos-docentes';
 import { inicio } from './inicio';
 import { materiasPage } from './materias';
 import { novedadesPage } from './novedades';
@@ -21,6 +22,7 @@ export const pages: PageConfig[] = [
   proyectosPage,
   centroEstudiantesPage,
   preguntasFrecuentesPage,
+  concursosDocentesPage,
 ];
 
 /** Página para rutas inexistentes. */

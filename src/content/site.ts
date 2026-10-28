@@ -98,6 +98,7 @@ export const site: SiteConfig = {
           { label: 'Preguntas frecuentes', href: '/preguntas-frecuentes' },
           { label: 'Bibliografía de materias', href: '/materias' },
           { label: 'Centro de Estudiantes', href: '/centro-de-estudiantes' },
+          { label: 'Concursos docentes', href: '/concursos-docentes' },
           { label: 'Consejo General de Educación', href: 'https://cge.entrerios.gov.ar' },
         ],
       },

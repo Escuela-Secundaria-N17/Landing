@@ -174,3 +174,14 @@ La app puede quedar en modo **desarrollo**: sólo lee la cuenta propia, así que
 | Instagram: `Invalid OAuth access token` | Token vencido o mal copiado | Generar uno nuevo (6.2) y actualizar el secret |
 
 Si una sincronización falla, **el deploy se corta y queda online la versión anterior**: el sitio nunca se publica a medias.
+
+
+## Concursos docentes
+
+La página `/concursos-docentes` se arma sola en cada deploy:
+
+- **Llamados:** `scripts/sync-cge.mjs` busca en cge.entrerios.gov.ar las publicaciones cuyo título nombra a la escuela (CUE 300-1754, o "N° 17" + "Ortiz"). No hay que configurar nada. En el log del paso *Concursos docentes desde el CGE* se ve cuántos encontró.
+- **Documentos para descargar** (opcional):
+  1. En Drive, creá una carpeta "Concursos docentes" con los archivos (formulario unificado, instructivos…). Compartila como *Cualquier persona con el enlace → Lector*.
+  2. GitHub → Settings → Secrets and variables → Actions → pestaña **Variables** → New variable: `DRIVE_CONCURSOS_FOLDER` = link de esa carpeta.
+  3. Los Google Docs se descargan como Word (para completarlos), las Planillas como Excel y los PDF tal cual. Los links fijos (credencial de puntaje, SAGE) están en `src/content/concursos.ts`.

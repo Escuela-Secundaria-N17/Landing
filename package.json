@@ -8,9 +8,10 @@
     "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "sync": "node scripts/sync-drive.mjs --optional && node scripts/sync-instagram.mjs --optional",
+    "sync": "node scripts/sync-drive.mjs --optional && node scripts/sync-instagram.mjs --optional && node scripts/sync-cge.mjs",
     "sync:drive": "node scripts/sync-drive.mjs",
-    "sync:instagram": "node scripts/sync-instagram.mjs"
+    "sync:instagram": "node scripts/sync-instagram.mjs",
+    "sync:cge": "node scripts/sync-cge.mjs --strict"
   },
   "dependencies": {
     "react": "^19.2.0",

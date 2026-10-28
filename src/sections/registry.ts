@@ -1,11 +1,13 @@
 import type { ComponentProps, ComponentType } from 'react';
 import { Agenda } from './Agenda/Agenda';
 import { Conversation } from './Conversation/Conversation';
+import { Documents } from './Documents/Documents';
 import { Features } from './Features/Features';
 import { Gallery } from './Gallery/Gallery';
 import { Hero } from './Hero/Hero';
 import { InstagramFeed } from './InstagramFeed/InstagramFeed';
 import { Library } from './Library/Library';
+import { Notices } from './Notices/Notices';
 import { PageIntro } from './PageIntro/PageIntro';
 import { Procedures } from './Procedures/Procedures';
 import { QuickLinks } from './QuickLinks/QuickLinks';
@@ -30,6 +32,8 @@ export const sectionRegistry = {
   conversation: Conversation,
   gallery: Gallery,
   agenda: Agenda,
+  documents: Documents,
+  notices: Notices,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } satisfies Record<string, ComponentType<any>>;
 

@@ -26,6 +26,11 @@
  *   (lo heredan de la carpeta raíz) para que estudiantes y familias puedan abrirlos.
  *
  * Escribe src/content/materias.generated.json. Si Drive falla, sale con error sin tocar nada.
+ *
+ * Además, si está DRIVE_CONCURSOS_FOLDER (link de otra carpeta, ej. "Concursos docentes"),
+ * lista sus archivos como documentos para descargar en /concursos-docentes y escribe
+ * src/content/documentos-concursos.generated.json. Los Google Docs se descargan como
+ * Word (para completarlos), las Planillas como Excel y el resto tal cual.
  * --optional: si faltan las variables, avisa y sale sin error (útil en CI antes de configurarlas).
  * Sin dependencias: Node 20+.
  */
@@ -39,6 +44,8 @@ const API = (process.env.DRIVE_API_BASE ?? 'https://www.googleapis.com/drive/v3'
 const KEY = process.env.GOOGLE_API_KEY;
 const ROOT_INPUT = process.env.DRIVE_ROOT_FOLDER ?? '';
 const OUT_JSON = path.join(ROOT, 'src/content/materias.generated.json');
+const DOCS_INPUT = process.env.DRIVE_CONCURSOS_FOLDER ?? '';
+const DOCS_JSON = path.join(ROOT, 'src/content/documentos-concursos.generated.json');
 const OPTIONAL = process.argv.includes('--optional');
 const FOLDER = 'application/vnd.google-apps.folder';
 const SHORTCUT = 'application/vnd.google-apps.shortcut';
@@ -138,7 +145,74 @@ async function materiales(folderId, prefix = '', depth = 0) {
   return out;
 }
 
+/** Link de descarga directa + formato, según el tipo de archivo de Drive. */
+export function descarga(f) {
+  const id = f.mimeType === SHORTCUT ? f.shortcutDetails?.targetId : f.id;
+  const mime = f.mimeType === SHORTCUT ? f.shortcutDetails?.targetMimeType ?? '' : f.mimeType;
+  if (mime === 'application/vnd.google-apps.document')
+    return { href: `https://docs.google.com/document/d/${id}/export?format=docx`, formato: 'word' };
+  if (mime === 'application/vnd.google-apps.spreadsheet')
+    return { href: `https://docs.google.com/spreadsheets/d/${id}/export?format=xlsx`, formato: 'planilla' };
+  if (mime === 'application/vnd.google-apps.presentation')
+    return { href: `https://docs.google.com/presentation/d/${id}/export/pdf`, formato: 'pdf' };
+  if (mime.startsWith('application/vnd.google-apps.')) return null; // formularios, sitios, etc.
+  const formato = /pdf/.test(mime)
+    ? 'pdf'
+    : /word|opendocument\.text|msword/.test(mime)
+      ? 'word'
+      : /sheet|excel|csv/.test(mime)
+        ? 'planilla'
+        : mime.startsWith('image/')
+          ? 'imagen'
+          : undefined;
+  return { href: `https://drive.google.com/uc?export=download&id=${id}`, ...(formato ? { formato } : {}) };
+}
+
+async function documentos(folderId, prefix = '', depth = 0) {
+  const out = [];
+  for (const f of await list(folderId)) {
+    if (isFolder(f)) {
+      if (depth < MAX_DEPTH) out.push(...(await documentos(folderTarget(f), `${prefix}${f.name} · `, depth + 1)));
+      continue;
+    }
+    const d = descarga(f);
+    if (!d) {
+      warn(`"${f.name}" no se puede descargar (tipo ${f.mimeType}): se omite`);
+      continue;
+    }
+    out.push({ titulo: `${prefix}${sinExtension(f.name)}`, ...d, descarga: true });
+  }
+  return out;
+}
+
+async function writeIfChanged(file, key, value) {
+  const previous = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : {};
+  if (JSON.stringify(previous[key] ?? []) === JSON.stringify(value)) {
+    log(`${path.relative(ROOT, file)}: sin cambios`);
+    return;
+  }
+  await writeFile(file, `${JSON.stringify({ syncedAt: new Date().toISOString(), [key]: value }, null, 2)}\n`);
+  log(`actualizado ${path.relative(ROOT, file)}`);
+}
+
+async function syncDocumentos() {
+  const folder = parseFolder(DOCS_INPUT);
+  if (!folder) fail('DRIVE_CONCURSOS_FOLDER no es un ID ni un link de carpeta válido');
+  if (folder.resourceKey) resourceKeys.set(folder.id, folder.resourceKey);
+  let docs;
+  try {
+    docs = await documentos(folder.id);
+  } catch (error) {
+    fail(`no se pudo leer la carpeta de concursos: ${error.message}`);
+  }
+  log(`concursos: ${docs.length} documentos`);
+  await writeIfChanged(DOCS_JSON, 'documentos', docs);
+}
+
 async function main() {
+  if (KEY && DOCS_INPUT) await syncDocumentos();
+  else log('sin DRIVE_CONCURSOS_FOLDER: se omiten los documentos de concursos');
+
   if (!KEY || !ROOT_INPUT) {
     const msg = 'faltan GOOGLE_API_KEY y/o DRIVE_ROOT_FOLDER (ver DEPLOY.md → "Bibliografía desde Drive")';
     if (OPTIONAL) {
@@ -185,13 +259,7 @@ async function main() {
   log(`${materias.length} materias, ${total} materiales`);
   if (materias.length === 0) warn('no se encontró ninguna materia: revisá la estructura de carpetas');
 
-  const previous = existsSync(OUT_JSON) ? JSON.parse(await readFile(OUT_JSON, 'utf8')) : { materias: [] };
-  if (JSON.stringify(previous.materias) === JSON.stringify(materias)) {
-    log('sin cambios');
-    return;
-  }
-  await writeFile(OUT_JSON, `${JSON.stringify({ syncedAt: new Date().toISOString(), materias }, null, 2)}\n`);
-  log(`actualizado ${path.relative(ROOT, OUT_JSON)}`);
+  await writeIfChanged(OUT_JSON, 'materias', materias);
 }
 
 main();

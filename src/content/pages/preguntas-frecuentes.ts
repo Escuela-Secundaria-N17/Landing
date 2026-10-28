@@ -47,6 +47,11 @@ export const preguntasFrecuentesPage: PageConfig = {
             from: 'school',
             text: 'Con tu DNI y el código que te da preceptoría. Si no te llegó, pasá por la escuela o escribinos y te lo reenviamos.',
           },
+          { ...familia, text: '¿Cómo saco la constancia de alumno regular?' },
+          {
+            from: 'school',
+            text: 'La generás desde SAGE con tu usuario de tutor, la imprimís y la traés a la escuela para que la firmen y sellen.',
+          },
           { ...familia, text: '¿Dónde veo las fechas de mesas de examen?' },
           {
             from: 'school',

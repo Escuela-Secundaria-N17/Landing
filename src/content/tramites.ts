@@ -1,4 +1,5 @@
 import type { Tramite } from '@/domain/tramites';
+import { requisitosConcurso } from './concursos';
 import { contacto } from './contacto';
 
 /**
@@ -44,16 +45,49 @@ export const inscripcion: Tramite = {
   ],
 };
 
+const SAGE = 'https://sage.entrerios.gov.ar/';
+
 export const otrosTramites: Tramite[] = [
   {
     id: 'constancia-alumno-regular',
     filtro: 'Constancias',
     titulo: 'Constancia de alumno regular',
-    resumen: 'Para ANSES, becas, obra social, boleto estudiantil y otros trámites.',
+    resumen:
+      'Se genera desde SAGE y después se firma y sella en la escuela. Sirve para ANSES, becas, obra social, boleto estudiantil y otros trámites.',
     pasos: [
-      'Pedila en secretaría con el DNI del estudiante.',
-      'Indicá para qué organismo es, si te la piden con un destino específico.',
-      'Retirala en el día o el siguiente día hábil.',
+      'Ingresá a SAGE con tu usuario de tutor/a (si no tenés, mirá el trámite "Usuario de SAGE").',
+      'Generá e imprimí la constancia de alumno regular del estudiante.',
+      'Llevala a la escuela para que la firmen y sellen: sin firma no tiene validez.',
+    ],
+    nota: '⚠ Validar con secretaría el horario para la firma.',
+    enlaces: [{ label: 'Ir a SAGE', href: SAGE }],
+  },
+  {
+    id: 'sage',
+    filtro: 'Usuario de SAGE',
+    titulo: 'Usuario de SAGE para familias',
+    resumen:
+      'Con el usuario de tutor/a ves asistencia y calificaciones y generás constancias. Todo se hace por el sistema.',
+    pasos: [
+      'Pedí en preceptoría que te den de alta como tutor/a del estudiante.',
+      'Ingresá a SAGE con tu DNI y validá la cuenta con el código que te dan.',
+      'Si olvidaste la contraseña o el código venció, avisá en la escuela y te lo regeneran.',
+    ],
+    enlaces: [{ label: 'Ir a SAGE', href: SAGE }],
+  },
+  {
+    id: 'pase',
+    filtro: 'Pases',
+    titulo: 'Pase de escuela',
+    resumen: 'Para estudiantes que ingresan desde otra escuela o se van a otra.',
+    pasos: [
+      'Antes que nada, consultá en la escuela si hay banco (vacante) en el año y turno que necesitás.',
+      'Si hay banco, pedí el pase en la secretaría de la escuela de origen.',
+      'Presentá el pase y la documentación personal del estudiante en nuestra secretaría.',
+    ],
+    enlaces: [
+      { label: contacto.telefono.texto, href: contacto.telefono.href },
+      { label: contacto.email, href: `mailto:${contacto.email}` },
     ],
   },
   {
@@ -72,28 +106,6 @@ export const otrosTramites: Tramite[] = [
     ],
   },
   {
-    id: 'sage',
-    filtro: 'SAGE',
-    titulo: 'Cuenta de tutor en SAGE',
-    resumen: 'Para ver asistencia y calificaciones del estudiante desde el celular.',
-    pasos: [
-      'Pedí en preceptoría el código de validación del tutor.',
-      'Ingresá a SAGE con tu DNI y validá la cuenta con ese código.',
-      'Si el código no llega o venció, avisá en la escuela y te lo regeneran.',
-    ],
-  },
-  {
-    id: 'pase',
-    filtro: 'Pases',
-    titulo: 'Pase de escuela',
-    resumen: 'Para estudiantes que ingresan desde otra escuela o se van a otra.',
-    pasos: [
-      'Solicitá el pase en la secretaría de la escuela de origen.',
-      'Consultá disponibilidad de vacante en el curso que corresponda.',
-      'Presentá el pase y la documentación personal del estudiante.',
-    ],
-  },
-  {
     id: 'netbook',
     filtro: 'Netbooks',
     titulo: 'Netbook bloqueada',
@@ -102,6 +114,15 @@ export const otrosTramites: Tramite[] = [
       'Acercate con la netbook y el DNI del estudiante.',
       'El referente técnico de la escuela gestiona el código de desbloqueo.',
     ],
+  },
+  {
+    id: 'concursos-docentes',
+    filtro: 'Concursos docentes',
+    titulo: 'Presentarse a un concurso docente',
+    resumen:
+      'Los llamados de la escuela los publica el CGE. La inscripción es presencial, en la escuela, el día y la hora del llamado.',
+    requisitos: [{ titulo: 'Qué llevar', items: requisitosConcurso }],
+    enlaces: [{ label: 'Ver llamados y descargar documentación', href: '/concursos-docentes' }],
   },
 ];
 
