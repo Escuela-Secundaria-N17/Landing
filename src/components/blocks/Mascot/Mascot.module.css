@@ -1,0 +1,62 @@
+.mascot {
+  height: auto;
+  user-select: none;
+}
+
+.full {
+  transform-origin: 50% 100%; /* gira desde los pies */
+}
+
+.face {
+  border-radius: 50%;
+  transform-origin: 50% 85%; /* gira desde el cuello */
+}
+
+/* Flotar suave en reposo (hero/footer) */
+.float {
+  animation: sway 7s ease-in-out infinite alternate;
+}
+
+@keyframes sway {
+  from { transform: rotate(-1.5deg); }
+  to   { transform: rotate(1.5deg) translateY(-6px); }
+}
+
+/* ── Hover gracioso ───────────────────────────────────────────
+ * Se activa al pasar el mouse sobre la mascota o sobre el elemento
+ * que la contiene (ej. el link del logo con el nombre).
+ * prefers-reduced-motion lo apaga desde global.css.
+ */
+
+/* Cara: "¿quién, yo?" — sacude la cabeza, se estira y se achata */
+.wiggle:hover,
+:hover > .wiggle {
+  animation: wiggle 0.9s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes wiggle {
+  0%   { transform: rotate(0) scale(1); }
+  12%  { transform: rotate(-16deg) scale(1.1, 0.92); }
+  26%  { transform: rotate(13deg) scale(0.94, 1.08) translateY(-3px); }
+  40%  { transform: rotate(-10deg) scale(1.05, 0.96); }
+  54%  { transform: rotate(7deg) translateY(-2px); }
+  68%  { transform: rotate(-4deg); }
+  82%  { transform: rotate(2deg); }
+  100% { transform: rotate(0) scale(1); }
+}
+
+/* Cuerpo entero: baila mientras el mouse esté encima de él (sólo de él:
+   en el hero el contenedor es enorme y bailaría al leer los títulos) */
+.dance:hover {
+  animation: dance 1s ease-in-out infinite;
+}
+
+@keyframes dance {
+  0%   { transform: rotate(0) translateY(0) scale(1); }
+  15%  { transform: rotate(-7deg) translateY(-18px) scale(0.97, 1.04); }
+  30%  { transform: rotate(0) translateY(0) scale(1.06, 0.94); }
+  45%  { transform: rotate(7deg) translateY(-14px) scale(0.97, 1.04); }
+  60%  { transform: rotate(0) translateY(0) scale(1.05, 0.95); }
+  75%  { transform: rotate(-3deg) translateY(-6px); }
+  100% { transform: rotate(0) translateY(0) scale(1); }
+}

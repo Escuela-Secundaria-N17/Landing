@@ -1,0 +1,47 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-bottom: var(--space-7);
+}
+
+.copy {
+  display: grid;
+  gap: var(--space-4);
+}
+
+/* Destacado de marca bajo cada título */
+.copy::before {
+  content: '';
+  order: 1;
+  width: 3.5rem;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--color-magenta), var(--color-turquoise));
+}
+
+.copy > * {
+  order: 0;
+}
+
+.line {
+  display: block;
+}
+
+.description {
+  order: 2;
+  max-width: 48ch;
+}
+
+.action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.actionsOnly {
+  justify-content: flex-end;
+  margin-bottom: var(--space-5);
+}

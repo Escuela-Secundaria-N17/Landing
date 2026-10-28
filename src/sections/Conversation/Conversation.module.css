@@ -1,0 +1,6 @@
+.thread {
+  display: grid;
+  gap: var(--space-6);
+  max-width: 52rem;
+  margin-left: auto;
+}

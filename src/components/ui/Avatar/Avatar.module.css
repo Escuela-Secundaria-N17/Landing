@@ -1,0 +1,21 @@
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f0a37a, #b4577a);
+  border: 2px solid var(--color-bg);
+  box-shadow: 0 0 0 1px var(--color-border);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+}
+
+.sm { width: 2rem; height: 2rem; }
+.md { width: 2.5rem; height: 2.5rem; }
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

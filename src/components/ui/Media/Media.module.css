@@ -1,0 +1,39 @@
+.media {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.rounded {
+  border-radius: var(--radius-lg);
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-4);
+}
+
+.caption {
+  font-size: var(--fs-xs);
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 24ch;
+  line-height: var(--lh-snug);
+}
+
+/* Gradientes "cinematográficos" que imitan la estética del shot */
+.violet { background: radial-gradient(120% 90% at 30% 20%, #7a2cff 0%, #2a0a4a 45%, #08050d 100%); }
+.dusk   { background: radial-gradient(120% 90% at 70% 25%, #ff6a88 0%, #6b1f7a 45%, #0b0612 100%); }
+.ember  { background: radial-gradient(120% 90% at 40% 30%, #ffb05c 0%, #8a3a12 45%, #120806 100%); }
+.ocean  { background: radial-gradient(120% 90% at 60% 20%, #4cc3ff 0%, #163f7a 45%, #050a14 100%); }
+.forest { background: radial-gradient(120% 90% at 30% 30%, #7be0a6 0%, #1f5a43 45%, #050d0a 100%); }
+.night  { background: radial-gradient(120% 90% at 50% 10%, #3a3a52 0%, #15151f 50%, #050507 100%); }

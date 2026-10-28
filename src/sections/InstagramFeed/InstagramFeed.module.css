@@ -1,0 +1,89 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.post {
+  position: relative;
+  display: block;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.media {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.post:hover .media {
+  transform: scale(1.04);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-4);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 55%);
+  color: var(--color-on-media);
+}
+
+.icon {
+  align-self: flex-end;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.meta {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.date {
+  font-size: var(--fs-xs);
+  color: rgba(255, 255, 255, 0.72);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.caption {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post:hover .icon {
+  transform: scale(1.15);
+}
+
+/* Sin publicaciones todavía: invitación a seguir la cuenta */
+.empty {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-muted);
+  transition: border-color var(--dur-fast), color var(--dur-fast);
+}
+
+.empty:hover {
+  border-color: var(--color-magenta);
+  color: var(--color-text);
+}
+
+.empty strong {
+  color: var(--color-text);
+  font-weight: var(--fw-medium);
+}

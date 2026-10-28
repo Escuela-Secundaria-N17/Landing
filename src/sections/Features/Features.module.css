@@ -1,0 +1,4 @@
+.list {
+  display: grid;
+  gap: clamp(3rem, 1rem + 6vw, 7rem);
+}

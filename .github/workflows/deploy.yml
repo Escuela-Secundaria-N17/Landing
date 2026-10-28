@@ -1,0 +1,109 @@
+# Publica el sitio en GitHub Pages.
+#
+# Corre:
+#   - en cada push a main (cambios de código o contenido)
+#   - cada 6 horas, para traer publicaciones nuevas de Instagram y cambios en Drive
+#   - a mano: pestaña Actions → "Deploy" → Run workflow
+#
+# En cada corrida trae Instagram y la bibliografía de Drive ANTES de compilar,
+# así lo publicado siempre está al día y no hace falta commitear datos.
+# Si una API falla, el deploy se corta y queda online la versión anterior.
+#
+# Configuración (Settings → Secrets and variables → Actions):
+#   Secrets:    GOOGLE_API_KEY           API key con la Drive API habilitada (obligatorio para Bibliografía)
+#               INSTAGRAM_ACCESS_TOKEN   token de larga duración (opcional al principio)
+#               GH_ADMIN_TOKEN           (opcional) para guardar el token de IG renovado
+#   Variables (opcionales, pisan los valores por defecto):
+#               SITE_URL                 por defecto: site.url en src/content/site.ts
+#               DRIVE_ROOT_FOLDER        por defecto: la carpeta "Bibliografia" de la escuela
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 */6 * * *'   # cada 6 h: Instagram + Drive
+    - cron: '41 12 * * 1'    # lunes 9:41 (AR): además renueva el token de Instagram
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Con package-lock.json (recomendado: commitearlo) instala versiones exactas.
+      - name: Instalar dependencias
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install --no-audit --no-fund; fi
+
+      # Avisa errores de tipos sin frenar la publicación del MVP.
+      # Cuando esté limpio, quitar continue-on-error para que bloquee.
+      - name: Typecheck
+        continue-on-error: true
+        run: npm run typecheck
+
+      - name: Bibliografía desde Drive
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          DRIVE_ROOT_FOLDER: ${{ vars.DRIVE_ROOT_FOLDER || 'https://drive.google.com/drive/folders/1-QhZcESMRuZJnU6Kt-lUWIyqVc9RHJL2' }}
+        run: node scripts/sync-drive.mjs --optional
+
+      - name: Novedades desde Instagram
+        env:
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          INSTAGRAM_TOKEN_OUT: ${{ runner.temp }}/ig-token
+        run: |
+          if [ "${{ github.event.schedule }}" = "41 12 * * 1" ]; then
+            node scripts/sync-instagram.mjs --optional --refresh
+          else
+            node scripts/sync-instagram.mjs --optional
+          fi
+
+      - name: Guardar token de Instagram renovado
+        if: github.event.schedule == '41 12 * * 1'
+        env:
+          GH_TOKEN: ${{ secrets.GH_ADMIN_TOKEN }}
+        run: |
+          FILE="${{ runner.temp }}/ig-token"
+          if [ -s "$FILE" ] && [ -n "$GH_TOKEN" ]; then
+            gh secret set INSTAGRAM_ACCESS_TOKEN --repo "$GITHUB_REPOSITORY" < "$FILE"
+            echo "Token actualizado."
+          elif [ -s "$FILE" ]; then
+            echo "::warning::Meta entregó un token nuevo pero falta GH_ADMIN_TOKEN para guardarlo. Actualizá INSTAGRAM_ACCESS_TOKEN a mano."
+          fi
+          rm -f "$FILE"
+
+      - name: Build
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

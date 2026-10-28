@@ -1,0 +1,49 @@
+.footer {
+  padding-top: var(--section-gap);
+  overflow: hidden;
+}
+
+.columns {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+.column {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.column ul {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.link {
+  font-size: var(--fs-sm);
+  transition: color var(--dur-fast);
+}
+
+.link:hover {
+  color: var(--color-primary-hover);
+}
+
+.brand {
+  display: grid;
+  justify-items: center;
+  margin-top: var(--space-9);
+}
+
+.mascot {
+  height: clamp(200px, 24vw, 320px);
+  width: auto;
+  margin-bottom: calc(var(--fs-wordmark) * -0.12);
+  position: relative;
+  z-index: 1;
+}
+
+.legal {
+  padding-block: var(--space-6);
+  text-align: center;
+}

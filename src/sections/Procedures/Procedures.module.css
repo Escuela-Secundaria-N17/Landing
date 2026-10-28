@@ -1,0 +1,298 @@
+/* ── Filtros (pestañas) ────────────────────── */
+.tabs {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-5);
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* En pantallas angostas, degradé a la derecha: indica que hay más filtros */
+@media (max-width: 899px) {
+  .tabs {
+    mask-image: linear-gradient(to right, #000 85%, transparent);
+    -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+  }
+}
+
+/* ── Panel del trámite ─────────────────────── */
+.detail {
+  display: grid;
+  gap: var(--space-6);
+  padding: clamp(1.5rem, 1rem + 2.5vw, 3rem);
+  border-radius: var(--radius-lg);
+  background: var(--color-primary-surface);
+  color: var(--color-on-primary);
+  animation: appear var(--dur-base) var(--ease-out);
+  /* Al llegar por /tramites#id quedan a la vista los filtros de arriba */
+  scroll-margin-top: calc(var(--header-offset) + 4rem);
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.detailHeader {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.onViolet {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: var(--color-on-primary);
+}
+
+.detailTitle {
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+}
+
+.detailSummary {
+  max-width: 56ch;
+  color: inherit;
+  opacity: 0.85;
+}
+
+/* ── Fechas / horario / lugar ──────────────── */
+.tiles {
+  display: grid;
+  gap: var(--space-3);
+}
+
+@media (min-width: 768px) {
+  .tiles {
+    grid-template-columns: 1fr 1fr 2fr;
+  }
+}
+
+.tile {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.tileIcon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--color-magenta);
+  color: var(--color-on-magenta);
+}
+
+.tileCopy {
+  display: grid;
+  gap: 2px;
+}
+
+.tileLabel {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+}
+
+.tileValue {
+  display: grid;
+  gap: var(--space-1);
+  font-size: var(--fs-md);
+  line-height: var(--lh-snug);
+}
+
+.mapLink {
+  font-size: var(--fs-sm);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  opacity: 0.85;
+}
+
+.mapLink:hover {
+  opacity: 1;
+}
+
+/* ── Documentación tildable ────────────────── */
+.checklist {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.checklistHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.checklistTitle,
+.blockTitle {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-medium);
+  text-transform: uppercase;
+}
+
+.progress {
+  font-size: var(--fs-sm);
+  opacity: 0.8;
+  font-variant-numeric: tabular-nums;
+}
+
+.groups {
+  display: grid;
+  gap: var(--space-5);
+}
+
+@media (min-width: 900px) {
+  .groups {
+    grid-template-columns: 3fr 2fr;
+  }
+}
+
+.group {
+  display: grid;
+  gap: var(--space-1);
+  align-content: start;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.groupTitle {
+  padding: 0;
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.75;
+}
+
+.check {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  margin-inline: calc(var(--space-3) * -1);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--dur-fast);
+}
+
+.check:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.checkInput {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.checkBox {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.15rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  border-radius: 6px;
+  transition: background-color var(--dur-fast), border-color var(--dur-fast);
+}
+
+.checkInput:checked + .checkBox {
+  border-color: var(--color-turquoise);
+  background: var(--color-turquoise)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23061e24' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 5 5 9-10'/%3E%3C/svg%3E")
+    center / 80% no-repeat;
+}
+
+.checkInput:focus-visible + .checkBox {
+  outline: 2px solid var(--color-on-primary);
+  outline-offset: 2px;
+}
+
+.checkText {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-md);
+  line-height: var(--lh-snug);
+}
+
+.checkInput:checked ~ .checkText {
+  opacity: 0.6;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.optional {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: var(--color-on-primary);
+  text-decoration: none;
+}
+
+/* ── Pasos ─────────────────────────────────── */
+.stepsBlock {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.steps {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  font-size: var(--fs-md);
+  line-height: var(--lh-snug);
+}
+
+.stepNumber {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--color-turquoise);
+  color: var(--color-on-turquoise);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.note {
+  color: inherit;
+  opacity: 0.8;
+}
+
+.detailFooter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}

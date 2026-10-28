@@ -1,0 +1,166 @@
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--z-header);
+  transition: background-color var(--dur-base) var(--ease-out), backdrop-filter var(--dur-base);
+}
+
+.solid {
+  background: var(--color-header-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: var(--space-4) var(--gutter);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.logo {
+  width: 2.75rem;
+  height: 2.75rem;
+  box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+.tagline {
+  display: grid;
+  font-size: var(--fs-xs);
+  line-height: 1.3;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+/* ── Nav de escritorio ─────────────────────── */
+.desktopNav {
+  display: none;
+}
+
+.desktopNav ul {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-pill);
+  background: var(--color-nav-bg);
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  transition: color var(--dur-fast), background-color var(--dur-fast);
+}
+
+.navLink:hover {
+  color: var(--color-text);
+}
+
+.navLink[aria-current='page'] {
+  color: var(--color-on-primary);
+  background: var(--color-primary-deep);
+}
+
+@media (min-width: 1200px) {
+  .desktopNav {
+    display: block;
+  }
+  .menuButton {
+    display: none;
+  }
+  /* El menú desplegable no se usa en escritorio */
+  .menu {
+    display: none;
+  }
+}
+
+/* ── Burger ────────────────────────────────── */
+.burger {
+  display: grid;
+  gap: 3px;
+  width: 14px;
+}
+.burger span {
+  display: block;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform var(--dur-base) var(--ease-out), opacity var(--dur-fast);
+}
+.burgerOpen span:nth-child(1) { transform: translateY(4.5px) rotate(45deg); }
+.burgerOpen span:nth-child(2) { opacity: 0; }
+.burgerOpen span:nth-child(3) { transform: translateY(-4.5px) rotate(-45deg); }
+
+/* ── Menú desplegable (mobile/tablet) ──────── */
+.menu {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: var(--space-2) var(--gutter) var(--space-7);
+}
+
+.menu ul {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: end;
+}
+
+.menu a {
+  font-size: var(--fs-xl);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-muted);
+  transition: color var(--dur-fast);
+}
+
+.menu a:hover,
+.menu a[aria-current='page'] {
+  color: var(--color-text);
+}
+
+.menu a[aria-current='page']::before {
+  content: '';
+  display: inline-block;
+  width: 0.4em;
+  height: 0.4em;
+  margin-right: 0.4em;
+  vertical-align: middle;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+
+.menuOpen {
+  animation: drop var(--dur-base) var(--ease-out);
+}
+
+@keyframes drop {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Pantallas muy angostas: sólo el logo (el nombre sigue en su aria-label) */
+@media (max-width: 400px) {
+  .tagline {
+    display: none;
+  }
+}

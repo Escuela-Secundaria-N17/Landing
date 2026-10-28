@@ -1,0 +1,4 @@
+node_modules
+dist
+# Imágenes de Instagram: las baja el deploy en cada corrida
+public/img/ig/*.jpg

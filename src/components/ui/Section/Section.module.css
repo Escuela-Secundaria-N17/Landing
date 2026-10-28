@@ -1,0 +1,15 @@
+.section {
+  position: relative;
+}
+
+.default {
+  padding-block: calc(var(--section-gap) / 2);
+}
+
+.compact {
+  padding-block: var(--space-6);
+}
+
+.none {
+  padding-block: 0;
+}

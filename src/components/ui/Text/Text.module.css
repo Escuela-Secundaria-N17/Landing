@@ -1,0 +1,15 @@
+.text {
+  line-height: var(--lh-body);
+  text-wrap: pretty;
+}
+
+.xs { font-size: var(--fs-xs); }
+.sm { font-size: var(--fs-sm); }
+.md { font-size: var(--fs-md); }
+
+.default { color: inherit; }
+.muted { color: var(--color-text-muted); }
+.subtle { color: var(--color-text-subtle); }
+
+.regular { font-weight: var(--fw-regular); }
+.medium { font-weight: var(--fw-medium); }

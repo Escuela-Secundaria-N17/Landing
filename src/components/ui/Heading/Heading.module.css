@@ -1,0 +1,31 @@
+.heading {
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+.upper {
+  text-transform: uppercase;
+}
+
+.md {
+  font-size: var(--fs-lg);
+  line-height: var(--lh-snug);
+}
+
+.lg {
+  font-size: var(--fs-xl);
+}
+
+.xl {
+  font-size: var(--fs-2xl);
+}
+
+.start {
+  text-align: start;
+}
+
+.end {
+  text-align: end;
+}

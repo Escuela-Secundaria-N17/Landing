@@ -1,0 +1,98 @@
+.top {
+  display: grid;
+  gap: var(--space-5);
+  margin-bottom: var(--space-8);
+}
+
+@media (min-width: 900px) {
+  .top {
+    grid-template-columns: 5fr 7fr;
+    align-items: start;
+  }
+}
+
+.intro {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.introIcon {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.membersWrap {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.period {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.members {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+}
+
+.member {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+}
+
+.memberText {
+  display: grid;
+  min-width: 0;
+}
+
+.memberName {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.memberRole {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+
+.subheading {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-regular);
+  text-transform: uppercase;
+  margin-bottom: var(--space-5);
+}
+
+.initiatives {
+  display: grid;
+  gap: var(--space-3);
+}
+
+@media (min-width: 768px) {
+  .initiatives {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.initiative {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+  align-content: start;
+  height: 100%;
+}

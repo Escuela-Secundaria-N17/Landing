@@ -1,0 +1,29 @@
+.marquee {
+  overflow: hidden;
+  width: 100%;
+}
+
+.inner {
+  display: flex;
+  width: max-content;
+  animation: scroll var(--marquee-duration, 40s) linear infinite;
+}
+
+.marquee[data-reverse] .inner {
+  animation-direction: reverse;
+}
+
+.marquee:hover .inner {
+  animation-play-state: paused;
+}
+
+.track {
+  display: flex;
+  gap: var(--space-6);
+  padding-right: var(--space-6);
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}

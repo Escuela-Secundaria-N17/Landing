@@ -1,0 +1,130 @@
+/*
+ * Design tokens — única fuente de verdad visual.
+ * Derivados del shot de referencia: fondo negro puro, violeta eléctrico como
+ * acento, violeta profundo para superficies secundarias, tipografía geométrica.
+ * Ningún componente debe usar valores "mágicos": todo sale de acá.
+ *
+ * Temas: :root es el modo oscuro (identidad de la marca). El modo claro
+ * redefine sólo los colores en [data-theme='light'], al final del archivo.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Color — base */
+  --color-bg: #000000;
+  --color-surface: #111113;
+  --color-surface-2: #1a1a1d;
+  --color-border: rgba(255, 255, 255, 0.28);
+  --color-border-soft: rgba(255, 255, 255, 0.12);
+
+  /* Color — marca */
+  --color-primary: #a40ef7;        /* violeta eléctrico (pills, CTA, marco) */
+  --color-primary-hover: #b53bff;
+  --color-primary-deep: #4a0e82;   /* violeta profundo (pills secundarias, burbujas) */
+  --color-primary-deep-hover: #5d16a0;
+  --color-primary-surface: #4b0f7d;/* bloques grandes violetas (bento) */
+
+  /* Color — acentos (del flyer institucional). Usar como relleno, con su "on-":
+   * magenta + blanco = 4.7:1 · turquesa + oscuro = 9.7:1 (ambos temas) */
+  --color-magenta: #d9267a;
+  --color-magenta-hover: #e83d8c;
+  --color-on-magenta: #ffffff;
+  --color-turquoise: #2fd6e0;
+  --color-turquoise-hover: #5be2ea;
+  --color-on-turquoise: #061e24;
+  /* Acento como TEXTO sobre el fondo de la página (cambia por tema) */
+  --color-accent-text: #3ee6ee;    /* 13.8:1 sobre negro */
+
+  /* Color — texto */
+  --color-text: #ffffff;
+  --color-text-muted: #8b8b92;
+  --color-text-subtle: #808088;
+  --color-wordmark: #2a2a2d;       /* wordmark gigante de fondo */
+
+  /* Color — texto sobre superficies violetas o fotos (igual en ambos temas) */
+  --color-on-primary: #ffffff;
+  --color-on-media: #ffffff;
+
+  /* Color — capas translúcidas del header */
+  --color-header-bg: rgba(0, 0, 0, 0.82);
+  --color-nav-bg: rgba(17, 17, 19, 0.6);
+  --color-hover-soft: rgba(255, 255, 255, 0.06);
+
+  /* Tipografía */
+  --font-sans: 'Jost', 'Futura', 'Century Gothic', system-ui, sans-serif;
+  --fw-thin: 200;
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  --fs-2xl: clamp(1.9rem, 1.2rem + 2.6vw, 3rem);
+  --fs-wordmark: clamp(5rem, 1rem + 19vw, 18rem);
+
+  --lh-tight: 1.05;
+  --lh-snug: 1.2;
+  --lh-body: 1.55;
+  --tracking-tight: -0.02em;
+
+  /* Espaciado (escala 4px) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  --section-gap: clamp(4rem, 2rem + 8vw, 9rem);
+  --gutter: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+  --container-max: 1240px;
+
+  /* Forma */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* Movimiento */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+
+  /* Alto reservado para el header fijo (+ alerta): el contenido arranca debajo */
+  --header-offset: 8.5rem;
+
+  /* Capas */
+  --z-header: 50;
+  --z-menu: 60;
+}
+
+/* ── Modo claro ─────────────────────────────────────────────
+ * Mismos violetas de marca; fondos y textos invertidos.
+ * Contrastes de texto ≥ 4.5:1 sobre --color-bg y --color-surface.
+ */
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --color-bg: #f6f3fa;
+  --color-surface: #ffffff;
+  --color-surface-2: #efeaf6;
+  --color-border: rgba(26, 14, 48, 0.24);
+  --color-border-soft: rgba(26, 14, 48, 0.1);
+
+  --color-text: #15111d;
+  --color-text-muted: #5f5a6b;
+  --color-text-subtle: #736d80;
+  --color-wordmark: #9c8bb5;       /* 2.8:1 con el fondo: bien visible, pero detrás de títulos y mascota */
+  --color-accent-text: #08707a;    /* turquesa oscuro: 5.3:1 sobre el fondo claro */
+
+  --color-header-bg: rgba(246, 243, 250, 0.86);
+  --color-nav-bg: rgba(255, 255, 255, 0.75);
+  --color-hover-soft: rgba(26, 14, 48, 0.05);
+}
